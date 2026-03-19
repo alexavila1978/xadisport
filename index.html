@@ -1,73 +1,100 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>XadiSport</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XadiSport Premium</title>
 <style>
-body {margin:0;font-family:Arial;background:linear-gradient(to bottom,#000,#222);color:white;text-align:center;}
-.container {max-width:400px;margin:auto;background:white;color:black;padding:20px;border-radius:15px;margin-top:30px;}
-select,input,button {width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;}
-button {background:black;color:white;font-weight:bold;}
+body{margin:0;font-family:Arial;background:#0a0a0a;color:#fff}
+header{padding:20px;text-align:center}
+.logo{font-size:38px;font-weight:bold;color:#00ffcc}
+.banner{background:#111;padding:10px;text-align:center;color:#00ffcc}
+.promo{background:#00ffcc;color:#000;padding:12px;text-align:center;font-weight:bold}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+.card{background:#fff;color:#000;border-radius:14px;padding:10px;text-align:center;box-shadow:0 0 10px rgba(0,0,0,0.3)}
+.card img{width:100%;border-radius:10px}
+button{padding:10px;border:none;border-radius:8px;background:#000;color:#fff;width:100%;margin-top:5px}
+.cart{position:fixed;bottom:10px;right:10px;background:#00ffcc;color:#000;padding:12px;border-radius:50px;font-weight:bold}
+.info{position:fixed;bottom:70px;right:10px;background:#fff;color:#000;padding:10px;border-radius:50px;font-weight:bold}
+.admin{background:#111;padding:10px;margin:10px;border-radius:10px;text-align:center}
+.footer{text-align:center;color:#aaa;margin:20px}
 </style>
 </head>
-<body>
+<body><header>
+<div class="logo">⚡ XadiSport ⚡</div>
+<p>Tienda Premium de Jerseys</p>
+</header><div class="banner">🚀 Entregas en Matamoros | Personalización disponible</div>
+<div class="promo">🔥 2 Jerseys Selección por $900 🔥</div><div class="admin">
+<p>🔒 Subir fotos reales</p>
+<input type="file" id="upload" accept="image/*">
+</div><div class="products" id="products"></div><div class="cart" onclick="sendCart()">🛒 Enviar pedido</div>
+<div class="info" onclick="sendInfo()">ℹ️ Info</div><div class="footer">© 2026 XadiSport Premium</div><script>
+const phone="5218683095612";
+let cart=[];
 
-<h1>XadiSport</h1>
-<p>Elige tu jersey favorito</p>
+const products=[
+{team:"América",img:"https://via.placeholder.com/200?text=America"},
+{team:"Chivas",img:"https://via.placeholder.com/200?text=Chivas"},
+{team:"Cruz Azul",img:"https://via.placeholder.com/200?text=Cruz+Azul"},
+{team:"Pumas",img:"https://via.placeholder.com/200?text=Pumas"},
+{team:"Tigres",img:"https://via.placeholder.com/200?text=Tigres"},
+{team:"Monterrey",img:"https://via.placeholder.com/200?text=Rayados"},
+{team:"Barcelona",img:"https://via.placeholder.com/200?text=Barcelona"},
+{team:"Real Madrid",img:"https://via.placeholder.com/200?text=Real+Madrid"}
+];
 
-<div class="container">
+const container=document.getElementById('products');
 
-<select id="team">
-<option value="">Equipo</option>
-<option>América</option>
-<option>Chivas</option>
-<option>Cruz Azul</option>
-<option>Pumas</option>
-<option>Tigres</option>
-<option>Monterrey</option>
-<option>Barcelona</option>
-<option>Real Madrid</option>
-<option>Otro</option>
-</select>
+products.forEach(p=>{
+let card=document.createElement('div');
+card.className='card';
+card.innerHTML=`
+<img src="${p.img}">
+<h3>${p.team}</h3>
+<button onclick="addToCart('${p.team}')">Agregar</button>
+`;
+container.appendChild(card);
+});
 
-<select id="size">
-<option value="">Talla</option>
-<option>S</option>
-<option>M</option>
-<option>L</option>
-<option>XL</option>
-<option>2XL</option>
-</select>
+function addToCart(team){
+cart.push(team);
+alert(team+" agregado al carrito");
+}
 
-<select id="type">
-<option value="">Tipo</option>
-<option>Jugador $450</option>
-<option>Aficionado $350</option>
-</select>
+function sendCart(){
+if(cart.length===0){alert("Carrito vacío");return;}
 
-<input id="custom" placeholder="Nombre y número (opcional)">
+let address = prompt("Ingresa tu dirección o punto de entrega en Matamoros:");
+if(!address){alert("Debes ingresar dirección o punto de entrega");return;}
 
-<button onclick="order()">Pedir por WhatsApp</button>
+let msg="Hola, ya realicé mi pedido:%0A";
+cart.forEach(item=>{msg+="- "+item+"%0A"});
+msg+=`%0ADirección/Punto de entrega: ${address}`;
+msg+="%0AForma de pago: Transferencia";
 
-</div>
-
-<script>
-function order(){
-let team=document.getElementById('team').value;
-let size=document.getElementById('size').value;
-let type=document.getElementById('type').value;
-let custom=document.getElementById('custom').value;
-
-if(!team||!size||!type){alert('Completa todos los campos');return;}
-
-let msg=`Hola, quiero un jersey ${team}, talla ${size}, tipo ${type}`;
-if(custom) msg+=`, personalizado: ${custom}`;
-
-let url=`https://wa.me/5218683095612?text=${encodeURIComponent(msg)}`;
+let url=`https://wa.me/${phone}?text=${msg}`;
 window.open(url,'_blank');
 }
-</script>
 
-</body>
+function sendInfo(){
+let msg="Hola, quiero más información sobre jerseys disponibles";
+let url=`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+window.open(url,'_blank');
+}
+
+// subir imagen
+const upload=document.getElementById('upload');
+upload.addEventListener('change',function(){
+const file=this.files[0];
+if(file){
+const reader=new FileReader();
+reader.onload=function(e){
+let img=document.createElement('img');
+img.src=e.target.result;
+img.style.width='100%';
+document.body.insertBefore(img, document.querySelector('.products'));
+}
+reader.readAsDataURL(file);
+}
+});
+</script></body>
 </html>
