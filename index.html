@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>XadiSport</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {margin:0;font-family:Arial;background:linear-gradient(to bottom,#000,#222);color:white;text-align:center;}
+.container {max-width:400px;margin:auto;background:white;color:black;padding:20px;border-radius:15px;margin-top:30px;}
+select,input,button {width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;}
+button {background:black;color:white;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<h1>XadiSport</h1>
+<p>Elige tu jersey favorito</p>
+
+<div class="container">
+
+<select id="team">
+<option value="">Equipo</option>
+<option>América</option>
+<option>Chivas</option>
+<option>Cruz Azul</option>
+<option>Pumas</option>
+<option>Tigres</option>
+<option>Monterrey</option>
+<option>Barcelona</option>
+<option>Real Madrid</option>
+<option>Otro</option>
+</select>
+
+<select id="size">
+<option value="">Talla</option>
+<option>S</option>
+<option>M</option>
+<option>L</option>
+<option>XL</option>
+<option>2XL</option>
+</select>
+
+<select id="type">
+<option value="">Tipo</option>
+<option>Jugador $450</option>
+<option>Aficionado $350</option>
+</select>
+
+<input id="custom" placeholder="Nombre y número (opcional)">
+
+<button onclick="order()">Pedir por WhatsApp</button>
+
+</div>
+
+<script>
+function order(){
+let team=document.getElementById('team').value;
+let size=document.getElementById('size').value;
+let type=document.getElementById('type').value;
+let custom=document.getElementById('custom').value;
+
+if(!team||!size||!type){alert('Completa todos los campos');return;}
+
+let msg=`Hola, quiero un jersey ${team}, talla ${size}, tipo ${type}`;
+if(custom) msg+=`, personalizado: ${custom}`;
+
+let url=`https://wa.me/5218683095612?text=${encodeURIComponent(msg)}`;
+window.open(url,'_blank');
+}
+</script>
+
+</body>
+</html>
